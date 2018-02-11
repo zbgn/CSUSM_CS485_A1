@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
@@ -29,7 +31,7 @@ public class PlayerController : MonoBehaviour {
 		rb.AddForce (mv * speed);
 	}
 
-	void OnTriggerEnter(Collider other) 
+	void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.CompareTag ( "Pick Up"))
 		{
@@ -41,11 +43,23 @@ public class PlayerController : MonoBehaviour {
 
 	void SetCountText ()
 	{
-		if (count <= 1) countText.text = "Coin: " + count.ToString ();
-		else countText.text = "Coins: " + count.ToString ();
-		if (count >= 12)
-		{
-			winText.text = "You Win!";
+		countText.text = ((count <= 1) ? "Coin: " : "Coins: ") + count.ToString ();
+		if (count >= 12) winText.text = "You Win!";
+	}
+
+	void OnGUI ()
+	{
+		if (GUI.Button (new Rect (Screen.width - 120, 20, 100, 50), "Menu")) {
+			SceneManager.LoadScene ("GameMenu", LoadSceneMode.Single);
+		}
+		if (count >= 12) {
+			if (GUI.Button (new Rect ((Screen.width / 2) - 50, Screen.height / 2, 100, 50), "Exit")) {
+				#if UNITY_EDITOR
+				UnityEditor.EditorApplication.isPlaying = false;
+				#else
+				Application.Quit();
+				#endif
+			}
 		}
 	}
 }
