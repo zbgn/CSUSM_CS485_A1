@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate ()
 	{
+		if (count >= 12)
+			return;
 		float mvHorizontal = Input.GetAxis ("Horizontal");
 		float mvVertical = Input.GetAxis ("Vertical");
 
